@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Speed Test</title>
+        <style>
+            body {
+                padding: 0px;
+                margin: 0px;
+            }
+
+            h1 {
+                height: 100vh;
+                line-height: 100vh;
+                text-align: center;
+                vertical-align: middle;
+                margin: 0px;
+                color: #666;
+                font-size: 72pt;
+                font-family: arial, sans-serif;
+            }
+            @media only screen and (max-width: 768px) {
+                h1{
+                    font-size: 32pt;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1 id="progress">12 Kbps</h1>
+        <script>
+            var imageAddr = "";
+            var downloadSize = 1; //bytes
+
+
+            var imgArray = [
+                {
+                    url: "/img/screenshot.jpg",
+                    size: 174747
+                },
+                {
+                    url: "/img/dummy1.jpg",
+                    size: 186488
+                },
+            ];
+
+
+            function ShowProgressMessage(msg) {
+                var oProgress = document.getElementById("progress");
+                if (oProgress) {
+                    var actualHTML = (typeof msg == "string") ? msg : msg.join("<br />");
+                    oProgress.innerHTML = actualHTML;
+                }
+            }
+
+            function InitiateSpeedDetection() {
+                ShowProgressMessage("0 Mbps");
+                // StartChecking();
+                window.setTimeout(StartChecking, 1000);
+            }
+            ;
+
+            function StartChecking() {
+                var randomIndex = Math.floor(Math.random() * imgArray.length);
+                var imgObject = imgArray[randomIndex];
+                imageAddr = imgObject.url;
+                downloadSize = imgObject.size;
+                window.setTimeout(MeasureConnectionSpeed, 150);
+            }
+
+            if (window.addEventListener) {
+                window.addEventListener('load', InitiateSpeedDetection, false);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', InitiateSpeedDetection);
+            }
+
+            function MeasureConnectionSpeed() {
+                var startTime, endTime;
+                var download = new Image();
+                download.onload = function () {
+                    endTime = (new Date()).getTime();
+                    showResults();
+                    StartChecking();
+                }
+
+                download.onerror = function (err, msg) {
+                    ShowProgressMessage("0 bps");
+                    StartChecking();
+                }
+
+                startTime = (new Date()).getTime();
+                var cacheBuster = "?v=" + startTime;
+                download.src = imageAddr + cacheBuster;
+
+                function showResults() {
+                    var duration = (endTime - startTime) / 1000;
+                    var bitsLoaded = downloadSize * 8;
+                    var speedBps = (bitsLoaded / duration).toFixed(2);
+                    var speedKbps = (speedBps / 1024).toFixed(2);
+                    var speedMbps = (speedKbps / 1024).toFixed(2);
+
+
+                    var msg = "";
+                    if (speedMbps > 0.10) {
+                        msg = speedMbps + " Mbps";
+                        ;
+                    } else if (speedKbps > 0.10) {
+                        msg = speedKbps + " Kbps";
+                    } else if (speedBps > 0) {
+                        msg = speedBps + " bps";
+                    }
+                    ShowProgressMessage(msg);
+                }
+            }
+
+            console.log("Why are you looking here?");
+            console.log("Don't look here");
+        </script>
+
+    </body>
+
+</html>
