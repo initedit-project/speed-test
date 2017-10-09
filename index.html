@@ -10,66 +10,131 @@
             body {
                 padding: 0px;
                 margin: 0px;
-            }
-
-            h1 {
+                font-family: arial, sans-serif;
+                background-color: #F6F6F6;
+                display: table;
+                width: 100%;
                 height: 100vh;
-                line-height: 100vh;
+            }
+            .content{
+                display: table-cell;
                 text-align: center;
                 vertical-align: middle;
-                margin: 0px;
-                color: #666;
-                font-size: 72pt;
-                font-family: arial, sans-serif;
             }
             @media only screen and (max-width: 768px) {
-                h1{
-                    font-size: 32pt;
-                }
+
+            }
+            .pause{
+                background-color: #FFF;
+                color: #666;
+                padding: 20px 50px;
+                border: 1px solid #666;
+                display: block;
+                font-weight: bold;
+                margin: 10px auto 0 auto;
+                cursor: pointer;
+            }
+            .speedContainer{
+                width:300px;
+                text-align: center;
+                margin:0 auto;
+
+            }
+            .speedContainer span{
+                color:#666;
+                font-size: 2.5rem;
+                /*display: block;*/
+            }
+            .speedContainer #speed{
+                font-size: 72pt;
+            }
+            .hide{
+                opacity: 0;
             }
         </style>
     </head>
 
     <body>
-        <h1 id="progress">12 Kbps</h1>
+        <div class="content">
+            <div class="speedContainer">
+                <span id="speed"></span><br/>
+                <span id="unit"></span>
+            </div>
+            <button class="pause hide" id="pause" onclick="StartChecking()">
+                TEST AGAIN
+            </button>
+        </div>
         <script>
             var imageAddr = "";
             var downloadSize = 1; //bytes
-
+            var imageIndex = 0;
 
             var imgArray = [
                 {
-                    url: "/img/screenshot.jpg",
+                    url: "img/dummy0.png",
+                    size: 1780
+                },
+                {
+                    url: "img/dummy2.jpg",
                     size: 174747
                 },
                 {
-                    url: "/img/dummy1.jpg",
+                    url: "img/dummy1.jpg",
                     size: 186488
                 },
+                {
+                    url: "img/dummy3.jpg",
+                    size: 268832
+                },
+                {
+                    url: "img/dummy4.jpg",
+                    size: 298055
+                },
+                {
+                    url: "img/dummy5.jpg",
+                    size: 426166
+                }
             ];
-
+            function getElement(id) {
+                return document.getElementById(id);
+            }
 
             function ShowProgressMessage(msg) {
-                var oProgress = document.getElementById("progress");
-                if (oProgress) {
-                    var actualHTML = (typeof msg == "string") ? msg : msg.join("<br />");
-                    oProgress.innerHTML = actualHTML;
+                var oSpeed = getElement("speed");
+                var oUnit = getElement("unit");
+                if (oSpeed && oUnit) {
+                    oSpeed.innerHTML = msg.speed;
+                    oUnit.innerHTML = msg.unit;
                 }
             }
 
             function InitiateSpeedDetection() {
-                ShowProgressMessage("0 Mbps");
-                // StartChecking();
+                ShowProgressMessage({
+                    speed: 0,
+                    unit: "Kbps"
+                });
                 window.setTimeout(StartChecking, 1000);
-            }
-            ;
 
+            }
+
+
+            function StopChecking() {
+                imageIndex = 0;
+                var oPause = getElement("pause");
+                oPause.classList.remove("hide");
+            }
             function StartChecking() {
-                var randomIndex = Math.floor(Math.random() * imgArray.length);
-                var imgObject = imgArray[randomIndex];
-                imageAddr = imgObject.url;
-                downloadSize = imgObject.size;
-                window.setTimeout(MeasureConnectionSpeed, 150);
+
+                var imgObject = imgArray[imageIndex++];
+                if (imageIndex > imgArray.length) {
+                    StopChecking();
+                } else {
+                    var oPause = getElement("pause");
+                    oPause.classList.add("hide");
+                    imageAddr = imgObject.url;
+                    downloadSize = imgObject.size;
+                    window.setTimeout(MeasureConnectionSpeed, 150);
+                }
             }
 
             if (window.addEventListener) {
@@ -88,7 +153,10 @@
                 }
 
                 download.onerror = function (err, msg) {
-                    ShowProgressMessage("0 bps");
+                    ShowProgressMessage({
+                        speed: 0,
+                        unit: "Kbps"
+                    });
                     StartChecking();
                 }
 
@@ -104,14 +172,19 @@
                     var speedMbps = (speedKbps / 1024).toFixed(2);
 
 
-                    var msg = "";
-                    if (speedMbps > 0.10) {
-                        msg = speedMbps + " Mbps";
-                        ;
-                    } else if (speedKbps > 0.10) {
-                        msg = speedKbps + " Kbps";
+                    var msg = {
+                        speed: 0,
+                        unit: "Kbps"
+                    };
+                    if (speedMbps > 0.999) {
+                        msg.speed = speedMbps;
+                        msg.unit = "Mbps";
+                    } else if (speedKbps > 0.999) {
+                        msg.speed = speedKbps;
+                        msg.unit = "Kbps";
                     } else if (speedBps > 0) {
-                        msg = speedBps + " bps";
+                        msg.speed = speedBps;
+                        msg.unit = "bps";
                     }
                     ShowProgressMessage(msg);
                 }
