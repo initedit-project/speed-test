@@ -4,7 +4,7 @@ Simple Internet Speed test using only HTML, and Javascript
 
 
 ## Live Demo
-### [speed.initedit.com](https://speed.initedit.com)
+### [speed.initedit.com](http://speed.initedit.com)
 
 ### Steps to start using
 
