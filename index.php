@@ -102,8 +102,9 @@
                 </div>
             </div>
             <div class="powered-by">
-                            Powered By <a href="">Initedit</a>
+                Powered By <a href="https://github.com/initedit-project">Initedit</a>
             </div>
         </div>
+
     </body>
 </html>
