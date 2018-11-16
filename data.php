@@ -5,6 +5,8 @@ $count = (int) $count;
 if (function_exists("set_time_limit ")) {
     set_time_limit(60 * 60);
 }
-while ($count-- > 0) {
+$startTime = time();
+while (time() - $startTime < 10) {
     echo 1;
 }
+
