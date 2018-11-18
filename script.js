@@ -1,17 +1,7 @@
 var Config = {
     timeStarted: 0,
     timeEnded: 0,
-    currentSize: 1024 * 1024 * 5,
-    maximumSize: 1024 * 1024 * 5,
     ajax: null,
-    downloadSizes: [
-//        1024,
-//        1024 * 5,
-//        1024 * 512,
-//        1024 * 1024,
-        1024 * 1024 * 5
-    ],
-    currentDownloadIndex: 0,
     graph: {
         data: [],
         point: {},
@@ -21,8 +11,10 @@ var Config = {
 }
 var Graph = Config.graph;
 Graph.point.add = function (point) {
-//    console.log(point);
     Graph.data.push([(new Date()).toLocaleTimeString(), point.raw.Kbps]);
+    if(Graph.data.length>55){
+        Graph.data.shift();
+    }
     generateGraph();
 }
 $(document).ready(initSpeedTestPhp);
@@ -37,15 +29,12 @@ function UpdateUISpeedTest(msg) {
 }
 
 function CalculateAverageSpeed() {
-//    console.log(Graph.data);
     var speed = Graph.data.map(function (item) {
         return item[1];
     });
-//    console.log(speed);
     var kbps = speed.reduce(function (a, b) {
         return a + b
     }, 0);
-    speed.splice(1, 9);
     kbps = (kbps / speed.length).toFixed(2);
     var mbps = (kbps / 1024).toFixed(2);
     var msg = {
@@ -59,12 +48,7 @@ function CalculateAverageSpeed() {
         msg.speed = kbps;
         msg.unit = "Kbps";
     }
-    var oSpeed = getElement("speedNumber");
-    var oUnit = getElement("speedUnit");
-    if (oSpeed && oUnit) {
-        oSpeed.innerHTML = msg.speed;
-        oUnit.innerHTML = msg.unit;
-    }
+    UpdateSpeedUI(msg);
 }
 
 function StopChecking() {
@@ -80,34 +64,25 @@ function StopChecking() {
 }
 
 function StartChecking() {
-
-    Config.currentSize = Config.downloadSizes[Config.currentDownloadIndex++];
-    if (Config.currentDownloadIndex > Config.downloadSizes.length) {
-        Config.currentDownloadIndex = 0;
-        StopChecking();
-    } else {
-
-        $("#refresh").hide();
-        MeasureConnectionSpeed();
-        if (!Config.timeout) {
-            Config.timeout = setTimeout(function () {
-                Config.ajax.abort();
-//                StopChecking();
-            }, 15*1000);
-        }
+    $("#refresh").hide();
+    MeasureConnectionSpeed();
+    if (!Config.timeout) {
+        Config.timeout = setTimeout(function () {
+            Config.ajax.abort();
+        }, 15*1000);
     }
 }
 function getElement(id) {
     return document.getElementById(id);
 }
 
+function UpdateSpeedUI(msg){
+    $("#speedNumber").html(msg.speed);
+    $("#speedUnit").html(msg.unit);
+}
+
 function ShowProgressMessage(msg) {
-    var oSpeed = getElement("speedNumber");
-    var oUnit = getElement("speedUnit");
-    if (oSpeed && oUnit) {
-        oSpeed.innerHTML = msg.speed;
-        oUnit.innerHTML = msg.unit;
-    }
+    UpdateSpeedUI(msg);
     Graph.point.add(msg);
 }
 function MeasureConnectionSpeed() {
@@ -151,15 +126,17 @@ function MeasureConnectionSpeed() {
         },
         type: 'GET',
         url: "data.php",
-        data: {count: Config.currentSize},
+        data: {},
         async: true,
         beforeSend: function (xhr) {
             Config.timeStarted = (new Date()).getTime();
         },
         success: function (data) {
             Config.timeEnded = (new Date()).getTime();
+            StopChecking();
         }
-    }).always(StartChecking);
+    })
+    //.always(StartChecking);
 }
 function generateGraph() {
     var data = new google.visualization.DataTable();
@@ -170,17 +147,21 @@ function generateGraph() {
 
     var options = {
         hAxis: {
-            title: 'Time'
+            title: 'Time',
+            textPosition:'none'
         },
         vAxis: {
-            title: 'Speed'
+            title: 'Speed',
+            textPosition:'none'
+
         },
-        animation: {duration: 10},
-        backgroundColor: '#E4E4E4',
+        animation: {duration: 2},
+        backgroundColor: '#FFF',
         vAxis: {
             gridlines: {
                 color: 'transparent'
-            }
+            },
+            textPosition:'none'
         },
         hAxis: {
             gridlines: {
@@ -188,7 +169,9 @@ function generateGraph() {
             },
             textPosition: 'none'
         },
-        legend: {position: 'none'}
+        legend: {position: 'none'},
+        colors:['red','#004411'],
+        chartArea: {'width': '100%', 'height': '100%'}
     };
 
     var chart = new google.visualization.LineChart(document.getElementById('chartContainer'));
