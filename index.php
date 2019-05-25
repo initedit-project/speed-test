@@ -5,9 +5,9 @@
         <title>Internet Speed Test - Initedit</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
-        <script src="script.js?v=<?php echo time();?>"></script>
+        <script src="script.js?v=2.0"></script>
         <link rel="icon" href="/favicon.png">
-        <link rel="stylesheet" href="styles.css?v=<?php echo time();?>">
+        <link rel="stylesheet" href="styles.css?v=2.0">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
