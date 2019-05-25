@@ -4,17 +4,15 @@
         <meta charset="UTF-8">
         <title>Internet Speed Test - Initedit</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
-        <script src="script.js?v=2.0"></script>
+        <script src="script.js?v=3.0"></script>
         <link rel="icon" href="/favicon.png">
-        <link rel="stylesheet" href="styles.css?v=2.0">
+        <link rel="stylesheet" href="styles.css?v=3.0">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
         <div class="container">
             <div class="content">
                 <div class="graph">
-                    <div id="chartContainer"></div>
                     <div class="overlay"></div>
                 </div>
                 <div class="speed">
