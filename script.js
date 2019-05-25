@@ -72,6 +72,7 @@ function StartChecking() {
     if (!Config.timeout) {
         Config.timeout = setTimeout(function () {
             Config.ajax.abort();
+            StopChecking();
         }, 15*1000);
     }
 }
