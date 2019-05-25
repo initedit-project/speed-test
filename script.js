@@ -22,6 +22,13 @@ $(document).ready(initSpeedTestPhp);
 function initSpeedTestPhp() {
     // google.charts.load('current', {'packages': ['corechart']});
     // google.charts.setOnLoadCallback(StartChecking);
+    $(".btn-stop").click(function(){
+        Config.ajax.abort();
+        StopChecking();
+    });
+    $(".btn-start").click(function(){
+        StartChecking();
+    });
     StartChecking();
 }
 
@@ -57,7 +64,8 @@ function StopChecking() {
         clearInterval(Config.timeout);
         Config.timeout = null;
     }
-    $("#refresh").show();
+    $(".btn-start").show();
+    $(".btn-stop").hide();
     CalculateAverageSpeed();
     Graph.data = [];
     Config.currentDownloadIndex = 0;
@@ -65,7 +73,8 @@ function StopChecking() {
 }
 
 function StartChecking() {
-    $("#refresh").hide();
+    $(".btn-start").hide();
+    $(".btn-stop").show();
     MeasureConnectionSpeed();
     if (!Config.timeout) {
         Config.timeout = setTimeout(function () {

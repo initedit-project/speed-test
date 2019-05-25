@@ -73,3 +73,17 @@ body{
         color:#333;
         font-weight: bold;
     }
+    .btn-stop,.btn-start{
+        position: relative;
+        padding: 1em 4em;
+        border: 2px solid #999;
+        border-radius: 4px;
+        background-color: #FFF;
+        cursor: pointer;
+        display: none;
+        transition: background-color 200ms linear;
+    }
+    .btn-stop:hover,.btn-start:hover{
+        background-color: #f36767;
+        color: #FFF;
+    }
