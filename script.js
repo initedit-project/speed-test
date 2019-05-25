@@ -20,8 +20,9 @@ Graph.point.add = function (point) {
 $(document).ready(initSpeedTestPhp);
 
 function initSpeedTestPhp() {
-    google.charts.load('current', {'packages': ['corechart']});
-    google.charts.setOnLoadCallback(StartChecking);
+    // google.charts.load('current', {'packages': ['corechart']});
+    // google.charts.setOnLoadCallback(StartChecking);
+    StartChecking();
 }
 
 function UpdateUISpeedTest(msg) {
@@ -139,43 +140,43 @@ function MeasureConnectionSpeed() {
     //.always(StartChecking);
 }
 function generateGraph() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Time');
-    data.addColumn('number', 'Kbps');
+    // var data = new google.visualization.DataTable();
+    // data.addColumn('string', 'Time');
+    // data.addColumn('number', 'Kbps');
 
-    data.addRows(Graph.data);
+    // data.addRows(Graph.data);
 
-    var options = {
-        hAxis: {
-            title: 'Time',
-            textPosition:'none'
-        },
-        vAxis: {
-            title: 'Speed',
-            textPosition:'none'
+    // var options = {
+    //     hAxis: {
+    //         title: 'Time',
+    //         textPosition:'none'
+    //     },
+    //     vAxis: {
+    //         title: 'Speed',
+    //         textPosition:'none'
 
-        },
-        animation: {duration: 2},
-        backgroundColor: '#FFF',
-        vAxis: {
-            gridlines: {
-                color: 'transparent'
-            },
-            textPosition:'none'
-        },
-        hAxis: {
-            gridlines: {
-                color: 'transparent'
-            },
-            textPosition: 'none'
-        },
-        legend: {position: 'none'},
-        colors:['red','#004411'],
-        chartArea: {'width': '100%', 'height': '100%'}
-    };
+    //     },
+    //     animation: {duration: 2},
+    //     backgroundColor: '#FFF',
+    //     vAxis: {
+    //         gridlines: {
+    //             color: 'transparent'
+    //         },
+    //         textPosition:'none'
+    //     },
+    //     hAxis: {
+    //         gridlines: {
+    //             color: 'transparent'
+    //         },
+    //         textPosition: 'none'
+    //     },
+    //     legend: {position: 'none'},
+    //     colors:['red','#004411'],
+    //     chartArea: {'width': '100%', 'height': '100%'}
+    // };
 
-    var chart = new google.visualization.LineChart(document.getElementById('chartContainer'));
+    // var chart = new google.visualization.LineChart(document.getElementById('chartContainer'));
 
-    chart.draw(data, options);
+    // chart.draw(data, options);
 
 }

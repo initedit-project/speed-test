@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>Internet Speed Test - Initedit</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
         <script src="script.js?v=<?php echo time();?>"></script>
         <link rel="icon" href="/favicon.png">
         <link rel="stylesheet" href="styles.css?v=<?php echo time();?>">
