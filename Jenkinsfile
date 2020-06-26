@@ -8,13 +8,13 @@ pipeline
     }
     stages
     {
-        stage('Git-checkout')
+       /*stage('Git-checkout')
         {
             steps
             {
                 git credentialsId: 'github', url: git_url , branch: git_branch
             }
-        }
+        }*/
         
         stage('Sonarqube-anaylysis')
         {
