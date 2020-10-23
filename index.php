@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="powered-by">
-                Powered By <a href="https://github.com/initedit-project">Initedit</a>
+                Powered By <a href="https://github.com/initedit/speed-test">Initedit</a>
             </div>
         </div>
 
